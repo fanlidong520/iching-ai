@@ -10,40 +10,54 @@ interface SageImageProps {
 }
 
 const sizeMap = {
-  sm: { w: 96, h: 120 },
-  md: { w: 140, h: 176 },
-  lg: { w: 280, h: 352 },
-  hero: { w: 320, h: 400 },
+  sm: 120,
+  md: 160,
+  lg: 320,
+  hero: 380,
 }
 
 export default function SageImage({ className = "", size = "hero" }: SageImageProps) {
-  const s = sizeMap[size]
+  const d = sizeMap[size]
   const [imgError, setImgError] = useState(false)
 
   if (imgError) {
-    return <SageIcon className={`w-64 h-80 text-[#c9a96e] ${className}`} opacity={0.85} />
+    return <SageIcon className={`text-[#c9a96e] ${className}`} opacity={0.85} />
   }
 
   return (
-    <div className={`relative mx-auto ${className}`} style={{ width: s.w, height: s.h }}>
-      {/* Gentle golden glow far behind */}
-      <div
-        className="absolute"
+    <div className={`relative mx-auto ${className}`} style={{ width: d, height: d }}>
+      {/* Outer glow ring */}
+      <div className="absolute -inset-[15%] rounded-full"
         style={{
-          top: '-10%', left: '-10%', width: '120%', height: '120%',
-          borderRadius: '50%',
-          background: 'radial-gradient(ellipse at center, rgba(201,169,110,0.08) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(201,169,110,0.06) 55%, rgba(201,169,110,0.02) 75%, transparent 100%)',
         }}
       />
-      <Image
-        src="/images/sage-clean.png"
-        alt="The Ancient Sage"
-        width={s.w}
-        height={s.h}
-        className="object-contain relative z-10"
-        priority
-        onError={() => setImgError(true)}
-        style={{ filter: 'drop-shadow(0 0 20px rgba(201,169,110,0.15))' }}
+
+      {/* Thin golden frame ring — the "inlaid cameo" border */}
+      <div className="absolute -inset-[2%] rounded-full border border-[#c9a96e]/15"
+        style={{ boxShadow: '0 0 30px rgba(201,169,110,0.08), inset 0 0 15px rgba(201,169,110,0.04)' }}
+      />
+
+      {/* Inner shadow — fades image edges into the frame */}
+      <div className="absolute inset-0 rounded-full overflow-hidden"
+        style={{ boxShadow: 'inset 0 0 60px 25px #0a0a0f' }}>
+        <Image
+          src="/images/sage-clean.png"
+          alt="The Ancient Sage"
+          width={d}
+          height={d}
+          className="object-cover relative"
+          priority
+          onError={() => setImgError(true)}
+          style={{ objectPosition: 'center 25%' }}
+        />
+      </div>
+
+      {/* Inner glow on top for depth */}
+      <div className="absolute inset-0 rounded-full pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle at 50% 40%, transparent 55%, rgba(10,10,15,0.3) 75%, rgba(10,10,15,0.7) 95%)',
+        }}
       />
     </div>
   )
