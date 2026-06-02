@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { calculateBaZi, formatBaZiForPrompt, BaZiChart } from '@/lib/bazi'
-import { calculateLifeHexagram, formatLifeHexagram } from '@/lib/life-hexagram'
+import { formatLifeHexagram } from '@/lib/life-hexagram'
 import { getAIReading } from '@/lib/deepseek'
 import { getHexagramById } from '@/data/hexagrams'
 

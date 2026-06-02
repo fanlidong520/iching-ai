@@ -80,10 +80,7 @@ export function castCoinHexagram(): CoinHexagramResult {
       value: l.changing ? (l.value === 6 ? 7 : 8) as (6 | 7 | 8 | 9) : l.value,
     }))
 
-    const changingUpperIdx = trigramFromLines(3)
-    const changingLowerIdx = trigramFromLines(0)
-
-    // Recalculate for stabilized
+    // Recalculate for stabilized hexagram
     let cUpper = 0, cLower = 0
     for (let i = 0; i < 3; i++) {
       const v = stabilizedLines[3 + i].value
