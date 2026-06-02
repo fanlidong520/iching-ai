@@ -32,7 +32,7 @@ export default function LandingPage() {
       {/* ===== HERO ===== */}
       <section className="relative z-10 min-h-screen flex flex-col items-center justify-center px-6 py-16 text-center">
         <div className="mb-8">
-          <SageImage size="hero" showMandala={true} />
+          <SageImage size="hero" />
         </div>
 
         {/* What it is — clear, immediate */}

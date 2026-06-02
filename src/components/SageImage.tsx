@@ -7,96 +7,61 @@ import SageIcon from "@/components/SageIcon"
 interface SageImageProps {
   className?: string
   size?: "sm" | "md" | "lg" | "hero"
-  showMandala?: boolean
 }
 
 const sizeMap = {
-  sm: { container: "w-[140px] h-[170px]", mandala: 200 },
-  md: { container: "w-[180px] h-[220px]", mandala: 260 },
-  lg: { container: "w-[280px] h-[340px]", mandala: 420 },
-  hero: { container: "w-[320px] md:w-[380px] h-[400px] md:h-[460px]", mandala: 560 },
+  sm: "w-24 h-28",
+  md: "w-28 h-36",
+  lg: "w-56 h-72",
+  hero: "w-64 h-80 md:w-80 md:h-96",
 }
 
-export default function SageImage({ className = "", size = "hero", showMandala = true }: SageImageProps) {
+export default function SageImage({ className = "", size = "hero" }: SageImageProps) {
   const s = sizeMap[size]
   const [imgError, setImgError] = useState(false)
 
   if (imgError) {
-    return <SageIcon className={`${s.container} text-[#c9a96e] ${className}`} opacity={0.85} />
+    return <SageIcon className={`${s} text-[#c9a96e] ${className}`} opacity={0.85} />
   }
 
   return (
-    <div className={`relative flex items-center justify-center ${s.container} ${className} mx-auto`}>
-      {/* Tai Chi mandala — integrated behind the sage */}
-      {showMandala && (
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <svg viewBox="0 0 200 200" style={{ width: '100%', height: '100%', opacity: 0.12 }}>
-            <circle cx="100" cy="100" r="96" fill="none" stroke="#c9a96e" strokeWidth="1" />
-            <circle cx="100" cy="100" r="90" fill="none" stroke="#c9a96e" strokeWidth="0.4" opacity="0.5" />
-            <path d="M100 4 A96 96 0 0 1 100 196 A48 48 0 0 1 100 100 A48 48 0 0 0 100 4" fill="#c9a96e" />
-            <circle cx="100" cy="52" r="10" fill="#0a0a0f" />
-            <circle cx="100" cy="148" r="10" fill="#c9a96e" />
-          </svg>
-        </div>
-      )}
-
-      {/* Trigrams on outer ring — only for hero */}
-      {showMandala && size === "hero" && (
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          {["☰","☷","☵","☲","☳","☶","☴","☱"].map((tri, i) => {
-            const angle = (i * 45 - 90) * (Math.PI / 180)
-            const r = 94
-            const cx = 100 + r * Math.cos(angle)
-            const cy = 100 + r * Math.sin(angle)
-            return (
-              <div
-                key={i}
-                className="absolute text-[#c9a96e]"
-                style={{
-                  left: `${cx / 2}%`, top: `${cy / 2}%`,
-                  transform: 'translate(-50%, -50%)',
-                  fontSize: 'max(12px, 2.5vmin)',
-                  opacity: 0.2,
-                }}
-              >{tri}</div>
-            )
-          })}
-        </div>
-      )}
-
-      {/* Golden halo glow */}
-      <div className="absolute inset-0 rounded-full"
+    <div className={`relative ${s} ${className} mx-auto`}>
+      {/* Golden glow behind sage */}
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
         style={{
-          background: 'radial-gradient(ellipse 50% 45% at 50% 40%, rgba(201,169,110,0.08) 0%, transparent 70%)',
-          filter: 'blur(3px)',
+          width: '140%',
+          height: '140%',
+          background: 'radial-gradient(ellipse 50% 45% at 50% 42%, rgba(201,169,110,0.12) 0%, transparent 60%)',
         }}
       />
 
-      {/* Sage image with circular mask */}
-      <div className="relative w-3/4 h-4/5 z-10">
+      {/* Sage image with smooth edge fade */}
+      <div className="relative w-full h-full overflow-hidden">
         <div
           className="w-full h-full"
           style={{
-            WebkitMaskImage: 'radial-gradient(ellipse 48% 46% at 50% 42%, black 35%, black 55%, transparent 85%)',
-            maskImage: 'radial-gradient(ellipse 48% 46% at 50% 42%, black 35%, black 55%, transparent 85%)',
+            maskImage: 'radial-gradient(ellipse 48% 46% at 50% 42%, black 30%, black 52%, transparent 82%)',
+            WebkitMaskImage: 'radial-gradient(ellipse 48% 46% at 50% 42%, black 30%, black 52%, transparent 82%)',
           }}
         >
           <Image
             src="/images/sage-clean.png"
             alt="The Ancient Sage"
             fill
-            className="object-contain"
+            className="object-cover"
             priority
-            sizes="320px"
+            sizes="(max-width: 768px) 320px, 400px"
             onError={() => setImgError(true)}
+            style={{ objectPosition: 'center 28%' }}
           />
         </div>
       </div>
 
-      {/* Inner shadow to blend edges */}
-      <div className="absolute inset-0 rounded-full pointer-events-none z-20"
+      {/* Edge blend — inset shadow to merge with background */}
+      <div className="absolute inset-0 pointer-events-none"
         style={{
-          boxShadow: 'inset 0 0 40px 25px #0a0a0f',
+          boxShadow: 'inset 0 0 50px 30px #0a0a0f',
         }}
       />
     </div>

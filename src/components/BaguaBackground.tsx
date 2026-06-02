@@ -1,53 +1,62 @@
 "use client"
 
-// Subtle scattered Bagua elements as page texture
+// Full-page Tai Chi + Bagua background
 export default function BaguaBackground() {
-  const hexagramNames = [
-    "乾","坤","屯","蒙","需","讼","师","比","小畜","履",
-    "泰","否","同人","大有","谦","豫","随","蛊","临","观",
-    "噬嗑","贲","剥","复","无妄","大畜","颐","大过","坎","离",
-    "咸","恒","遁","大壮","晋","明夷","家人","睽","蹇","解",
-    "损","益","夬","姤","萃","升","困","井","革","鼎",
-    "震","艮","渐","归妹","丰","旅","巽","兑","涣","节",
-    "中孚","小过","既济","未济"
-  ]
+  const trigrams = ["☰", "☷", "☵", "☲", "☳", "☶", "☴", "☱"]
 
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden z-0" aria-hidden="true">
-      {/* Scattered trigrams */}
-      {["☰","☷","☵","☲","☳","☶","☴","☱","☰","☷","☵","☲","☳","☶","☴","☱","☰","☷","☵","☲"].map((tri, i) => {
-        const left = ((i * 173 + 37) % 94) + 3
-        const top = ((i * 251 + 53) % 92) + 4
+      {/* MASSIVE central Tai Chi — fills the viewport */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+        style={{
+          width: 'max(150vmax, 900px)',
+          height: 'max(150vmax, 900px)',
+        }}>
+        <svg viewBox="0 0 200 200" className="w-full h-full" style={{ opacity: 0.08 }}>
+          {/* Outer rings */}
+          <circle cx="100" cy="100" r="98" fill="none" stroke="#c9a96e" strokeWidth="0.6" />
+          <circle cx="100" cy="100" r="92" fill="none" stroke="#c9a96e" strokeWidth="0.3" opacity="0.5" />
+          <circle cx="100" cy="100" r="85" fill="none" stroke="#c9a96e" strokeWidth="0.2" opacity="0.3" />
+
+          {/* Yin-Yang */}
+          <path d="M100 2 A98 98 0 0 1 100 198 A49 49 0 0 1 100 100 A49 49 0 0 0 100 2" fill="#c9a96e" opacity="0.6" />
+          <circle cx="100" cy="51" r="11" fill="#0a0a0f" />
+          <circle cx="100" cy="149" r="11" fill="#c9a96e" opacity="0.6" />
+        </svg>
+      </div>
+
+      {/* Trigrams — placed far out, near viewport edges */}
+      {trigrams.map((tri, i) => {
+        const angle = (i * 45 - 90) * (Math.PI / 180)
+        const radius = 42 // % from center
+        const x = 50 + radius * Math.cos(angle)
+        const y = 50 + radius * Math.sin(angle)
+
         return (
           <div
             key={`tri-${i}`}
             className="absolute text-[#c9a96e]"
             style={{
-              left: `${left}%`, top: `${top}%`,
-              fontSize: `${14 + (i % 8)}px`,
-              opacity: 0.04 + (i % 5) * 0.008,
+              left: `${x}%`, top: `${y}%`,
+              transform: 'translate(-50%, -50%)',
+              fontSize: 'max(20px, 4vmin)',
+              opacity: 0.1,
+              textShadow: '0 0 30px rgba(201,169,110,0.3)',
             }}
-          >{tri}</div>
+          >
+            {tri}
+          </div>
         )
       })}
 
-      {/* Scattered hexagram characters */}
-      {hexagramNames.map((char, i) => {
-        const left = ((i * 271 + 47) % 93) + 3
-        const top = ((i * 359 + 59) % 91) + 5
-        return (
-          <div
-            key={`hex-${i}`}
-            className="absolute text-[#c9a96e]"
-            style={{
-              left: `${left}%`, top: `${top}%`,
-              fontSize: `${9 + (i % 4)}px`,
-              opacity: 0.02 + (i % 4) * 0.006,
-              fontFamily: "'Noto Serif SC', serif",
-            }}
-          >{char}</div>
-        )
-      })}
+      {/* Outer decorative ring */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#c9a96e]"
+        style={{
+          width: 'max(140vmax, 850px)',
+          height: 'max(140vmax, 850px)',
+          opacity: 0.04,
+        }}
+      />
     </div>
   )
 }
