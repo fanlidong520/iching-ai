@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next"
 import "./globals.css"
+import BaguaBackground from "@/components/BaguaBackground"
 
 export const viewport: Viewport = {
   themeColor: "#0a0a0f",
@@ -44,6 +45,7 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       </head>
       <body className="min-h-full bg-ink-wash flex flex-col">
+        <BaguaBackground />
         {children}
       </body>
     </html>
