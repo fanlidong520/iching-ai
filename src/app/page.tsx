@@ -4,7 +4,6 @@ import { useState } from "react"
 import Link from "next/link"
 import SageImage from "@/components/SageImage"
 import { EmblemIcon } from "@/components/SageIcon"
-import TaiChiMandala from "@/components/TaiChiMandala"
 
 export default function LandingPage() {
   const [email, setEmail] = useState("")
@@ -32,12 +31,8 @@ export default function LandingPage() {
 
       {/* ===== HERO ===== */}
       <section className="relative z-10 min-h-screen flex flex-col items-center justify-center px-6 py-16 text-center">
-        {/* Sage within Tai Chi mandala */}
-        <div className="relative mb-8 flex items-center justify-center" style={{ width: 'min(85vmin, 550px)', height: 'min(85vmin, 550px)' }}>
-          <TaiChiMandala />
-          <div className="relative z-10">
-            <SageImage size="hero" />
-          </div>
+        <div className="mb-8">
+          <SageImage size="hero" showMandala={true} />
         </div>
 
         {/* What it is — clear, immediate */}

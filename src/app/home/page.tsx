@@ -71,7 +71,7 @@ export default function HomePage() {
     <main className="flex-1 min-h-screen  pb-24">
       {/* Header */}
       <header className="px-6 py-8 text-center">
-        <SageImage size="sm" />
+        <SageImage size="sm" showMandala={false} />
         <p className="text-[#c9a96e]/40 text-[10px] tracking-widest uppercase mb-2">The master is present</p>
         <h1 className="text-2xl text-gold-grad" style={{ fontFamily: "'Playfair Display', serif" }}>
           Your Sacred Space

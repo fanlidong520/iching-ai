@@ -54,7 +54,7 @@ export default function OnboardingPage() {
       <div className="w-full max-w-md">
         {/* Sage greeting */}
         <div className="text-center mb-10">
-          <SageImage size="md" />
+          <SageImage size="md" showMandala={false} />
           <h1 className="text-3xl md:text-4xl text-gold-grad mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>
             The Master Awaits
           </h1>
