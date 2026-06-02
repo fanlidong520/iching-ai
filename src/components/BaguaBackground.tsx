@@ -6,13 +6,13 @@ export default function BaguaBackground() {
 
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden z-0" aria-hidden="true">
-      {/* MASSIVE central Tai Chi — fills the viewport */}
+      {/* Central Tai Chi */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
         style={{
-          width: 'max(150vmax, 900px)',
-          height: 'max(150vmax, 900px)',
+          width: 'min(90vmin, 600px)',
+          height: 'min(90vmin, 600px)',
         }}>
-        <svg viewBox="0 0 200 200" className="w-full h-full" style={{ opacity: 0.08 }}>
+        <svg viewBox="0 0 200 200" className="w-full h-full" style={{ opacity: 0.18 }}>
           {/* Outer rings */}
           <circle cx="100" cy="100" r="98" fill="none" stroke="#c9a96e" strokeWidth="0.6" />
           <circle cx="100" cy="100" r="92" fill="none" stroke="#c9a96e" strokeWidth="0.3" opacity="0.5" />
@@ -39,8 +39,8 @@ export default function BaguaBackground() {
             style={{
               left: `${x}%`, top: `${y}%`,
               transform: 'translate(-50%, -50%)',
-              fontSize: 'max(20px, 4vmin)',
-              opacity: 0.1,
+              fontSize: 'max(22px, 4.5vmin)',
+              opacity: 0.16,
               textShadow: '0 0 30px rgba(201,169,110,0.3)',
             }}
           >
@@ -52,9 +52,9 @@ export default function BaguaBackground() {
       {/* Outer decorative ring */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#c9a96e]"
         style={{
-          width: 'max(140vmax, 850px)',
-          height: 'max(140vmax, 850px)',
-          opacity: 0.04,
+          width: 'min(105vmin, 700px)',
+          height: 'min(105vmin, 700px)',
+          opacity: 0.06,
         }}
       />
     </div>
