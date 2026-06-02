@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { stripe, STRIPE_PRICE_ID } from "@/lib/stripe"
+import { getStripe, STRIPE_PRICE_ID } from "@/lib/stripe"
 import { getServiceSupabase } from "@/lib/supabase"
 
 export async function POST(request: NextRequest) {
@@ -13,11 +13,15 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    const stripe = getStripe()
+    if (!stripe) {
+      return NextResponse.json({ error: "Payment not configured" }, { status: 503 })
+    }
+
     const supabase = getServiceSupabase()
     let customerId: string | undefined
 
     if (supabase) {
-      // Check if user already has a Stripe customer ID
       const { data: existingSub } = await supabase
         .from("subscriptions")
         .select("stripe_customer_id")
@@ -27,7 +31,6 @@ export async function POST(request: NextRequest) {
     }
 
     if (!customerId) {
-      // Create Stripe customer
       const customer = await stripe.customers.create({
         email,
         metadata: { userId },
@@ -35,7 +38,6 @@ export async function POST(request: NextRequest) {
       customerId = customer.id
     }
 
-    // Create checkout session
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       mode: "subscription",
