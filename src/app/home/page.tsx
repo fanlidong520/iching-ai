@@ -56,7 +56,7 @@ export default function HomePage() {
 
   if (!profile) {
     return (
-      <main className="flex-1 flex items-center justify-center min-h-screen bg-ink-wash">
+      <main className="flex-1 flex items-center justify-center min-h-screen ">
         <div className="w-8 h-8 border-2 border-[#c9a96e]/30 border-t-[#c9a96e] rounded-full animate-spin" />
       </main>
     )
@@ -68,7 +68,7 @@ export default function HomePage() {
     .slice(0, 3)
 
   return (
-    <main className="flex-1 min-h-screen bg-ink-wash pb-24">
+    <main className="flex-1 min-h-screen  pb-24">
       {/* Header */}
       <header className="px-6 py-8 text-center">
         <SageImage size="sm" />

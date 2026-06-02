@@ -26,7 +26,7 @@ export default function LandingPage() {
   }
 
   return (
-    <main className="flex-1 bg-ink-wash relative">
+    <main className="flex-1 relative">
 
       {/* ===== HERO ===== */}
       <section className="relative z-10 min-h-screen flex flex-col items-center justify-center px-6 py-16 text-center">

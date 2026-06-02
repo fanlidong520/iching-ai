@@ -50,7 +50,7 @@ export default function OnboardingPage() {
   ]
 
   return (
-    <main className="flex-1 flex flex-col items-center justify-center min-h-screen px-6 py-12 bg-ink-wash">
+    <main className="flex-1 flex flex-col items-center justify-center min-h-screen px-6 py-12 ">
       <div className="w-full max-w-md">
         {/* Sage greeting */}
         <div className="text-center mb-10">

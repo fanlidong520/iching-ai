@@ -93,7 +93,7 @@ export default function AskPage() {
   }
 
   return (
-    <main className="flex-1 min-h-screen bg-ink-wash pb-24">
+    <main className="flex-1 min-h-screen  pb-24">
       <header className="px-6 py-8 text-center">
         <button onClick={() => router.push("/home")} className="text-[#c9a96e]/40 text-xs tracking-widest uppercase mb-4 hover:text-[#c9a96e]/70 transition-colors">
           ← Return to Sacred Space

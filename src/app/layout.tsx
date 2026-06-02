@@ -44,7 +44,7 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       </head>
-      <body className="min-h-full bg-ink-wash flex flex-col">
+      <body className="min-h-full flex flex-col" style={{ background: '#0a0a0f' }}>
         <BaguaBackground />
         {children}
       </body>
