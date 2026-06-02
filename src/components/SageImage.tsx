@@ -36,32 +36,43 @@ export default function SageImage({ className = "", size = "hero" }: SageImagePr
         }}
       />
 
-      {/* Sage image with smooth edge fade */}
-      <div className="relative w-full h-full overflow-hidden">
+      {/* Sage image — tight mask, object-contain to avoid edge stretching */}
+      <div className="relative w-full h-full overflow-hidden rounded-full">
         <div
           className="w-full h-full"
           style={{
-            maskImage: 'radial-gradient(ellipse 48% 46% at 50% 42%, black 30%, black 52%, transparent 82%)',
-            WebkitMaskImage: 'radial-gradient(ellipse 48% 46% at 50% 42%, black 30%, black 52%, transparent 82%)',
+            maskImage: 'radial-gradient(ellipse 40% 38% at 50% 42%, black 25%, black 42%, transparent 68%)',
+            WebkitMaskImage: 'radial-gradient(ellipse 40% 38% at 50% 42%, black 25%, black 42%, transparent 68%)',
           }}
         >
           <Image
             src="/images/sage-clean.png"
             alt="The Ancient Sage"
             fill
-            className="object-cover"
+            className="object-contain"
             priority
             sizes="(max-width: 768px) 320px, 400px"
             onError={() => setImgError(true)}
-            style={{ objectPosition: 'center 28%' }}
+            style={{ objectPosition: 'center 30%' }}
           />
         </div>
       </div>
 
-      {/* Edge blend — inset shadow to merge with background */}
-      <div className="absolute inset-0 pointer-events-none"
+      {/* Multiple edge blend layers for complete border removal */}
+      <div className="absolute inset-0 pointer-events-none rounded-full"
         style={{
-          boxShadow: 'inset 0 0 50px 30px #0a0a0f',
+          boxShadow: `
+            inset 0 0 80px 50px #0a0a0f,
+            inset 0 0 40px 20px #0a0a0f,
+            inset 0 0 15px 10px #0a0a0f
+          `,
+        }}
+      />
+      {/* Extra dark ring at the very edge */}
+      <div className="absolute inset-0 pointer-events-none rounded-full"
+        style={{
+          border: '15px solid #0a0a0f',
+          opacity: 0.9,
         }}
       />
     </div>
