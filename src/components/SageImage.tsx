@@ -36,15 +36,15 @@ export default function SageImage({ className = "", size = "hero" }: SageImagePr
         }}
       />
 
-      {/* Image with hard-edge mask to completely remove borders */}
+      {/* Image with smooth oval fade mask */}
       <div
-        className="relative w-full h-full overflow-hidden"
+        className="relative w-full h-full overflow-hidden rounded-full"
         style={{
           WebkitMaskImage: `
-            radial-gradient(ellipse 58% 52% at 50% 42%, black 40%, black 55%, transparent 80%)
+            radial-gradient(ellipse 48% 45% at 50% 40%, black 40%, black 58%, transparent 85%)
           `,
           maskImage: `
-            radial-gradient(ellipse 58% 52% at 50% 42%, black 40%, black 55%, transparent 80%)
+            radial-gradient(ellipse 48% 45% at 50% 40%, black 40%, black 58%, transparent 85%)
           `,
         }}
       >
@@ -63,14 +63,11 @@ export default function SageImage({ className = "", size = "hero" }: SageImagePr
         />
       </div>
 
-      {/* Heavy edge-darkening overlay — blends remaining visible edges into the dark bg */}
+      {/* Edge blend — fades outer edges into page background */}
       <div
-        className="absolute inset-0 pointer-events-none"
+        className="absolute inset-0 pointer-events-none rounded-full"
         style={{
-          background: `
-            radial-gradient(ellipse 55% 50% at 50% 42%, transparent 35%, rgba(10,10,15,0.2) 55%, rgba(10,10,15,0.85) 85%),
-            linear-gradient(to right, rgba(10,10,15,0.6) 0%, transparent 20%, transparent 80%, rgba(10,10,15,0.6) 100%)
-          `,
+          boxShadow: 'inset 0 0 60px 30px #0a0a0f',
         }}
       />
     </div>
