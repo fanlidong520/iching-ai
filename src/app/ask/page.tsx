@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
+import Link from "next/link"
 
 interface CoinLine {
   lineNumber: number
@@ -18,11 +19,20 @@ export default function AskPage() {
   const [currentCast, setCurrentCast] = useState(0)
   const [reading, setReading] = useState<string | null>(null)
   const [hexData, setHexData] = useState<any>(null)
+  const [hasProfile, setHasProfile] = useState(false)
 
   useEffect(() => {
-    const stored = localStorage.getItem("user_profile")
-    if (!stored) router.push("/onboarding")
-  }, [router])
+    // Check for preset question from scenario chips
+    const preset = localStorage.getItem("preset_question")
+    if (preset) {
+      setQuestion(preset)
+      localStorage.removeItem("preset_question")
+    }
+    // Check if user has a profile
+    if (localStorage.getItem("user_profile")) {
+      setHasProfile(true)
+    }
+  }, [])
 
   const startCasting = () => {
     if (!question.trim()) return
@@ -47,8 +57,7 @@ export default function AskPage() {
         9: { value: 9, name: "Old Yang (老阳)", changing: true },
       }
 
-      const line = { lineNumber: cast, ...valueMap[sum] }
-      setCastLines(prev => [...prev, line])
+      setCastLines(prev => [...prev, { lineNumber: cast, ...valueMap[sum] }])
       setCurrentCast(cast)
       cast++
     }, 800)
@@ -81,32 +90,27 @@ export default function AskPage() {
 
   const getLineDisplay = (line: CoinLine) => {
     const isYang = line.value === 7 || line.value === 9
-    if (isYang) {
-      return <div className="hex-line-yang" />
-    }
+    if (isYang) return <div className="hex-line-yang" />
     return (
       <div className="hex-line-yin">
-        <span />
-        <span />
+        <span /><span />
       </div>
     )
   }
 
   return (
-    <main className="flex-1 min-h-screen  pb-24">
+    <main className="flex-1 min-h-screen pb-24">
       <header className="px-6 py-8 text-center">
-        <button onClick={() => router.push("/home")} className="text-[#c9a96e]/40 text-xs tracking-widest uppercase mb-4 hover:text-[#c9a96e]/70 transition-colors">
-          ← Return to Sacred Space
-        </button>
+        <Link href="/" className="text-[#c9a96e]/40 text-xs tracking-widest uppercase mb-4 inline-block hover:text-[#c9a96e]/70 transition-colors">
+          ← The Ancient Sage
+        </Link>
         <h1 className="text-2xl text-gold-grad" style={{ fontFamily: "'Playfair Display', serif" }}>
-          Cast the Bronze Coins
+          Ask the Oracle
         </h1>
         <p className="text-[#e8e0d5]/40 text-sm mt-2 max-w-sm mx-auto leading-relaxed">
-          The ancient ritual of 六爻 (Liu Yao).
+          Three bronze coins. Six throws.
           <br />
-          Three coins, six throws. Heaven and earth converge
-          <br />
-          in the pattern they reveal.
+          One answer from three thousand years of wisdom.
         </p>
       </header>
 
@@ -117,12 +121,12 @@ export default function AskPage() {
               <span>☰</span><span>☷</span><span>☵</span><span>☲</span><span>☳</span><span>☴</span>
             </div>
             <label className="block text-[#e8e0d5]/60 text-xs tracking-wider uppercase mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>
-              What weighs upon your spirit?
+              What do you want to ask?
             </label>
             <textarea
               value={question}
               onChange={e => setQuestion(e.target.value)}
-              placeholder="Speak your question to the ancient coins — about love, a choice, a path uncertain, or simply what the heavens wish you to know..."
+              placeholder='e.g. "Should I move on from this relationship?" or "Is now the right time to change careers?"'
               rows={4}
               className="w-full bg-[#0a0a0f] border border-[#c9a96e33] rounded-lg px-4 py-3 text-[#e8e0d5] focus:outline-none focus:border-[#c9a96e] transition-colors resize-none placeholder:text-[#e8e0d5]/15"
             />
@@ -134,9 +138,6 @@ export default function AskPage() {
             >
               Cast the Three Coins
             </button>
-            <p className="text-[#e8e0d5]/15 text-[10px] text-center mt-4 tracking-wider">
-              The coins have waited three thousand years for your question
-            </p>
           </div>
         )}
 
@@ -146,7 +147,6 @@ export default function AskPage() {
               The coins fall... Line {Math.min(currentCast, 6)} of 6
             </p>
 
-            {/* Animated coins */}
             <div className="flex justify-center gap-4 mb-8">
               {[0, 1, 2].map(i => (
                 <div
@@ -164,7 +164,6 @@ export default function AskPage() {
               ))}
             </div>
 
-            {/* Hexagram lines built from bottom (line 1) to top (line 6) */}
             <div className="flex flex-col-reverse items-center gap-2 mb-6">
               {[1, 2, 3, 4, 5, 6].map(lineNum => {
                 const existingLine = castLines.find(l => l.lineNumber === lineNum)
@@ -187,15 +186,11 @@ export default function AskPage() {
               })}
             </div>
 
-            {/* Progress dots */}
             <div className="flex justify-center gap-2">
               {[1, 2, 3, 4, 5, 6].map(n => (
-                <div
-                  key={n}
-                  className={`w-1.5 h-1.5 rounded-full transition-all duration-500 ${
-                    n <= currentCast ? 'bg-[#c9a96e]' : 'bg-[#c9a96e]/10'
-                  }`}
-                />
+                <div key={n} className={`w-1.5 h-1.5 rounded-full transition-all duration-500 ${
+                  n <= currentCast ? 'bg-[#c9a96e]' : 'bg-[#c9a96e]/10'
+                }`} />
               ))}
             </div>
           </div>
@@ -203,12 +198,11 @@ export default function AskPage() {
 
         {phase === "result" && reading && hexData && (
           <div className="space-y-6">
-            {/* Hexagram display */}
             <div className="card-eastern p-6 text-center">
               <div className="flex justify-center gap-6 text-[#c9a96e]/15 text-xl mb-4">
                 <span>☯</span>
               </div>
-              <p className="text-[#c9a96e]/40 text-[10px] tracking-widest uppercase mb-4">The Hexagram Revealed</p>
+              <p className="text-[#c9a96e]/40 text-[10px] tracking-widest uppercase mb-4">Your Hexagram</p>
               <div className="flex flex-col-reverse items-center gap-1.5 mb-5">
                 {castLines.map(line => (
                   <div key={line.lineNumber} className="w-full max-w-[200px]">
@@ -232,12 +226,11 @@ export default function AskPage() {
               )}
             </div>
 
-            {/* Reading */}
             <div className="card-eastern p-6 animate-fade-in-up">
               <div className="flex items-center gap-2 mb-4 pb-3 border-b border-[#c9a96e]/10">
                 <div className="w-6 h-6 rounded-full bg-[#c9a96e]/10 flex items-center justify-center text-[10px] text-[#c9a96e]">易</div>
                 <p className="text-[#c9a96e]/50 text-xs tracking-widest uppercase" style={{ fontFamily: "'Playfair Display', serif" }}>
-                  The Oracle&apos;s Reply
+                  The Oracle Replies
                 </p>
               </div>
               <div className="text-sm leading-relaxed text-[#e8e0d5]/80 whitespace-pre-line"
@@ -246,25 +239,38 @@ export default function AskPage() {
               </div>
             </div>
 
-            {/* Actions */}
+            {/* Prompt to add birth info for better readings */}
+            {!hasProfile && (
+              <div className="card-eastern p-5 text-center animate-fade-in-up border-[#c9a96e]/25">
+                <p className="text-[#c9a96e]/70 text-sm mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>
+                  Want readings that know you personally?
+                </p>
+                <p className="text-[#e8e0d5]/40 text-xs mb-4">
+                  Add your birth moment and every oracle will be woven through your unique celestial chart.
+                </p>
+                <Link
+                  href="/onboarding"
+                  className="inline-block bg-[#c9a96e]/10 border border-[#c9a96e]/30 text-[#c9a96e] px-6 py-2 rounded-full text-sm font-semibold tracking-wide
+                             hover:bg-[#c9a96e]/20 transition-all duration-300"
+                >
+                  Add My Birth Chart →
+                </Link>
+              </div>
+            )}
+
             <div className="flex gap-3">
               <button
-                onClick={() => {
-                  setPhase("input")
-                  setReading(null)
-                  setHexData(null)
-                  setCastLines([])
-                }}
+                onClick={() => { setPhase("input"); setReading(null); setHexData(null); setCastLines([]) }}
                 className="flex-1 card-eastern p-3 text-center text-[#e8e0d5]/50 text-sm hover:text-[#c9a96e] hover:border-[#c9a96e]/40 transition-all tracking-wider"
               >
                 Ask Another
               </button>
-              <button
-                onClick={() => router.push("/home")}
+              <Link
+                href="/"
                 className="flex-1 card-eastern p-3 text-center text-[#e8e0d5]/50 text-sm hover:text-[#c9a96e] hover:border-[#c9a96e]/40 transition-all tracking-wider"
               >
-                Return Home
-              </button>
+                Home
+              </Link>
             </div>
           </div>
         )}
