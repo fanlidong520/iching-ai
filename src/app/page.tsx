@@ -7,10 +7,11 @@ import SageImage from "@/components/SageImage"
 import { EmblemIcon } from "@/components/SageIcon"
 
 const SCENARIOS = [
-  { emoji: "♥", label: "Love", question: "What do I need to understand about my love life right now?" },
-  { emoji: "⚡", label: "Career", question: "What direction should I take in my work and career?" },
+  { emoji: "♥", label: "Love", question: "Should I let go, or should I hold on?", primary: true },
+  { emoji: "♥", label: "Relationships", question: "Is this connection real? What do they feel about me?", primary: true },
+  { emoji: "⚡", label: "Career", question: "Is this the right time to change direction in my work?" },
   { emoji: "☯", label: "Self", question: "What is the deeper pattern behind what I'm feeling lately?" },
-  { emoji: "☀", label: "Today", question: "What energy surrounds me today and what should I pay attention to?" },
+  { emoji: "☀", label: "Today", question: "What energy surrounds me today? What should I pay attention to?" },
 ]
 
 export default function LandingPage() {
@@ -50,11 +51,11 @@ export default function LandingPage() {
           <span className="text-2xl md:text-4xl">About Love, Career, and Life Decisions</span>
         </h1>
 
-        <p className="text-[#e8e0d5]/50 text-sm md:text-base max-w-md leading-relaxed mb-2">
-          When you feel stuck, uncertain, or just need someone who understands —
+        <p className="text-[#e8e0d5]/55 text-sm md:text-base max-w-md leading-relaxed mb-2">
+          When your heart already knows, but your mind still needs to hear it —
         </p>
         <p className="text-[#e8e0d5]/35 text-xs md:text-sm max-w-md leading-relaxed mb-10">
-          the I Ching listens. Three coins, six throws, one answer woven from three millennia of Eastern wisdom.
+          Three coins. Six throws. One answer from three millennia of Eastern wisdom.
         </p>
 
         {/* Primary CTA — "Ask a question" first */}
@@ -88,11 +89,90 @@ export default function LandingPage() {
                 localStorage.setItem("preset_question", s.question)
                 router.push("/ask")
               }}
-              className="card-eastern px-5 py-2.5 rounded-full text-sm text-[#e8e0d5]/60 hover:text-[#c9a96e] hover:border-[#c9a96e]/40 transition-all"
+              className={`px-5 py-2.5 rounded-full text-sm transition-all ${
+                (s as any).primary
+                  ? 'bg-[#c9a96e]/10 border border-[#c9a96e]/30 text-[#c9a96e] hover:bg-[#c9a96e]/20'
+                  : 'card-eastern text-[#e8e0d5]/60 hover:text-[#c9a96e] hover:border-[#c9a96e]/40'
+              }`}
             >
               {s.emoji} {s.label}
             </button>
           ))}
+        </div>
+      </section>
+
+      {/* ===== APP PREVIEW ===== */}
+      <section className="relative z-10 py-24 px-6">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-2xl md:text-3xl text-gold-grad mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>
+            How It Works
+          </h2>
+          <p className="text-[#e8e0d5]/40 text-sm mb-16">Three moments. That&apos;s all it takes.</p>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                step: "1",
+                title: "Ask Your Question",
+                desc: "What weighs on your heart? Type it in — love, career, a choice you can't stop thinking about.",
+                icon: "✧",
+              },
+              {
+                step: "2",
+                title: "Cast the Coins",
+                desc: "Three bronze coins fall six times. Watch the ancient hexagram form, line by line.",
+                icon: "🪙",
+              },
+              {
+                step: "3",
+                title: "Receive Your Reading",
+                desc: "The oracle speaks. A warm, personal, specific response — not a generic horoscope.",
+                icon: "易",
+              },
+            ].map((item, i) => (
+              <div key={i} className="flex flex-col items-center">
+                {/* Phone mockup */}
+                <div className="w-48 h-80 rounded-[2rem] border-2 border-[#c9a96e]/15 bg-[#111118] p-3 mb-6 relative overflow-hidden"
+                  style={{ boxShadow: '0 0 60px rgba(201,169,110,0.06)' }}>
+                  {/* Phone notch */}
+                  <div className="w-20 h-1.5 rounded-full bg-[#c9a96e]/10 mx-auto mb-3" />
+                  {/* Screen content */}
+                  <div className="w-full h-full rounded-2xl bg-[#0a0a0f] border border-[#c9a96e]/5 flex flex-col items-center justify-center p-4">
+                    <div className="text-3xl mb-3" style={{ fontFamily: "'Noto Serif SC', serif" }}>{item.icon}</div>
+                    <div className="w-3/4 h-2 rounded-full bg-[#c9a96e]/8 mb-2" />
+                    <div className="w-1/2 h-2 rounded-full bg-[#c9a96e]/5 mb-5" />
+                    {i === 0 && (
+                      <div className="w-4/5 space-y-2">
+                        <div className="h-1.5 rounded-full bg-[#c9a96e]/15 w-full" />
+                        <div className="h-1.5 rounded-full bg-[#c9a96e]/10 w-3/4" />
+                        <div className="h-1.5 rounded-full bg-[#c9a96e]/8 w-1/2" />
+                      </div>
+                    )}
+                    {i === 1 && (
+                      <div className="flex flex-col-reverse gap-1.5 items-center w-full">
+                        {[1,1,0,1,0,1].map((yang, j) =>
+                          yang ? <div key={j} className="w-2/3 h-0.5 rounded-full bg-[#c9a96e]/25" />
+                               : <div key={j} className="flex gap-2 w-2/3"><div className="flex-1 h-0.5 rounded-full bg-[#c9a96e]/15" /><div className="flex-1 h-0.5 rounded-full bg-[#c9a96e]/15" /></div>
+                        )}
+                      </div>
+                    )}
+                    {i === 2 && (
+                      <div className="w-4/5 space-y-2">
+                        <div className="h-1.5 rounded-full bg-[#c9a96e]/20 w-full" />
+                        <div className="h-1.5 rounded-full bg-[#c9a96e]/15 w-5/6" />
+                        <div className="h-1.5 rounded-full bg-[#c9a96e]/12 w-4/6" />
+                        <div className="h-1.5 rounded-full bg-[#c9a96e]/8 w-3/6" />
+                        <div className="h-1.5 rounded-full bg-[#c9a96e]/5 w-5/6" />
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <p className="text-[#c9a96e]/50 text-xs tracking-widest uppercase mb-1">Step {item.step}</p>
+                <h3 className="text-gold text-sm mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>{item.title}</h3>
+                <p className="text-[#e8e0d5]/40 text-xs leading-relaxed max-w-[200px]">{item.desc}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -102,7 +182,7 @@ export default function LandingPage() {
           <h2 className="text-2xl md:text-3xl text-gold-grad mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>
             Here&apos;s What the Oracle Sounds Like
           </h2>
-          <p className="text-[#e8e0d5]/40 text-sm mb-12">Real people. Real questions. This is what you might hear.</p>
+          <p className="text-[#e8e0d5]/40 text-sm mb-12">Questions people bring to the oracle — and what they hear back.</p>
 
           <div className="card-eastern p-6 md:p-8 text-left">
             <div className="flex items-center gap-2 mb-4 pb-3 border-b border-[#c9a96e]/10">
@@ -113,25 +193,26 @@ export default function LandingPage() {
             </div>
 
             <p className="text-[#e8e0d5]/40 text-xs mb-4 italic">
-              Question: &ldquo;Should I leave my stable job to pursue what I truly love?&rdquo;
+              Question: &ldquo;Should I let go of this relationship, or give it one more chance?&rdquo;
             </p>
             <p className="text-gold text-base mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
-              Hexagram 24 — Return
+              Hexagram 64 — Before Completion
             </p>
 
             <div className="text-sm leading-relaxed text-[#e8e0d5]/70 space-y-3" style={{ fontFamily: "'Playfair Display', serif" }}>
               <p>
-                The turning point has arrived. After a long winter, the first light breaks through.
-                This hexagram speaks not of a reckless leap, but of a natural cycle completing itself —
-                the old chapter has already ended in your heart. What remains is only the outer form.
+                The little fox is nearly across the river, but her tail is still wet.
+                This hexagram does not say &ldquo;stay&rdquo; or &ldquo;leave.&rdquo; It says this: the story is not yet finished.
+                There is still something incomplete between you — a word unspoken, a truth unfelt.
+                Before you decide, ask yourself: have I truly been myself in this connection?
               </p>
               <p>
-                The oracle does not tell you to leave or stay. It tells you this: you already know.
-                The hesitation is not doubt — it is the natural pause before the return of spring.
-                Trust the timing. When you move, move with clarity, not desperation.
+                If the answer is yes — and it has not been received — then the river is behind you.
+                If the answer is no — then speak your truth first. Then decide.
+                The oracle does not choose for you. It only shows you where you stand.
               </p>
               <p className="text-[#c9a96e]/60 text-xs pt-2 italic">
-                &ldquo;水到渠成 — when the water arrives, the channel forms.&rdquo;
+                &ldquo;未济 — nothing is finished. Every ending is also a beginning.&rdquo;
               </p>
             </div>
 

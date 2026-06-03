@@ -130,6 +130,26 @@ export default function AskPage() {
               rows={4}
               className="w-full bg-[#0a0a0f] border border-[#c9a96e33] rounded-lg px-4 py-3 text-[#e8e0d5] focus:outline-none focus:border-[#c9a96e] transition-colors resize-none placeholder:text-[#e8e0d5]/15"
             />
+            {/* Question templates */}
+            <div className="mt-5 space-y-2">
+              <p className="text-[#e8e0d5]/25 text-[10px] tracking-wider text-center mb-3">Or tap a question you might ask</p>
+              {[
+                "Should I let go, or should I hold on?",
+                "Is this the right time to change direction?",
+                "What is blocking me right now?",
+                "What should I focus on today?",
+              ].map((q) => (
+                <button
+                  key={q}
+                  onClick={() => setQuestion(q)}
+                  className="w-full text-left px-4 py-2.5 rounded-lg border border-[#c9a96e]/10 text-[#e8e0d5]/40 text-sm
+                             hover:border-[#c9a96e]/30 hover:text-[#e8e0d5]/70 transition-all"
+                >
+                  &ldquo;{q}&rdquo;
+                </button>
+              ))}
+            </div>
+
             <button
               onClick={startCasting}
               disabled={!question.trim()}
