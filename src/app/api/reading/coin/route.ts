@@ -21,7 +21,12 @@ export async function POST(request: NextRequest) {
       ? getHexagramById(coinResult.changingHexagramId)
       : null
 
-    // Build prompt
+    // Only include birth chart context if user has provided it
+    const hasBirthInfo = baziSummary && baziSummary.length > 0
+    const personalityContext = hasBirthInfo
+      ? `\n\nThe seeker's Life Hexagram is #${lifeHexId}.\nThe seeker's elemental nature: ${baziSummary}\nYou may subtly reference how their personal energy interacts with this hexagram.`
+      : `\n\nIMPORTANT: The seeker has NOT shared their birth information. Do NOT mention birth charts, elemental charts, BaZi, five elements, personal celestial blueprints, or any reference to "your chart" or "your elements." Base your reading ONLY on the hexagram and their question.`
+
     const prompt = `A seeker asks: "${question}"
 
 I cast three coins six times and received this oracle:
@@ -33,9 +38,7 @@ ${mainHex?.description || ''}
 
 ${changingHex ? `The changing lines reveal Hexagram #${coinResult.changingHexagramId} — ${changingHex.nameEn} (${changingHex.nameZh})
 ${changingHex.description}` : 'No changing lines — the hexagram is stable, meaning the situation is settled.'}
-
-${lifeHexId ? `The seeker's Life Hexagram is #${lifeHexId}.` : ''}
-${baziSummary ? `The seeker's elemental nature: ${baziSummary}` : ''}
+${personalityContext}
 
 Please provide guidance for this seeker. Address their question with the wisdom of the I Ching. What does the oracle reveal about their situation? What should they consider? Give them warmth, insight, and a gentle push toward clarity.`
 

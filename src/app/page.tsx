@@ -42,7 +42,7 @@ export default function LandingPage() {
         </div>
 
         <p className="text-[#c9a96e]/60 text-xs tracking-[0.2em] uppercase mb-4">
-          The 3,000-Year-Old Oracle · Now Listening
+          A Private Oracle for Love, Career &amp; Life Decisions
         </p>
 
         <h1 className="text-4xl md:text-6xl text-gold-grad mb-4 leading-tight max-w-2xl" style={{ fontFamily: "'Playfair Display', serif" }}>
@@ -306,7 +306,7 @@ export default function LandingPage() {
                 Something Deeper?
               </h2>
               <p className="text-[#e8e0d5]/40 text-sm leading-relaxed max-w-sm mx-auto">
-                For the questions that can&apos;t fit inside a hexagram. A real conversation with someone who studies the ancient ways.
+                For questions that need more depth, nuance, and care. Request a longer, more personal reading.
               </p>
             </div>
             <ConsultationForm />
