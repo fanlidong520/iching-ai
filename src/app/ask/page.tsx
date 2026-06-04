@@ -11,24 +11,42 @@ interface CoinLine {
   changing: boolean
 }
 
+const CATEGORIES = [
+  { emoji: "♥", label: "Love" },
+  { emoji: "⚡", label: "Career" },
+  { emoji: "🍂", label: "Letting Go" },
+  { emoji: "☀", label: "Today" },
+]
+
+const QUESTIONS = {
+  "♥": ["Should I let go, or should I hold on?", "Is this connection real? What do they feel?", "How do I know if this is the right person?"],
+  "⚡": ["Is this the right time to change direction?", "Should I stay in this job, or look for something new?", "What is my next career move?"],
+  "🍂": ["How do I release what no longer serves me?", "Why can't I stop thinking about the past?", "What do I need to forgive?"],
+  "☀": ["What energy surrounds me today?", "What should I focus on right now?", "What is the universe trying to tell me?"],
+}
+
+const RITUAL_STEPS = [
+  "Casting the coins...",
+  "Reading the changing lines...",
+  "Listening for the answer...",
+]
+
 export default function AskPage() {
   const [question, setQuestion] = useState("")
+  const [category, setCategory] = useState("")
   const [phase, setPhase] = useState<"input" | "casting" | "result">("input")
   const [castLines, setCastLines] = useState<CoinLine[]>([])
   const [currentCast, setCurrentCast] = useState(0)
+  const [ritualStep, setRitualStep] = useState(0)
   const [reading, setReading] = useState<string | null>(null)
   const [hexData, setHexData] = useState<any>(null)
   const [hasProfile, setHasProfile] = useState(false)
+  const [saved, setSaved] = useState(false)
 
   useEffect(() => {
     const preset = localStorage.getItem("preset_question")
-    if (preset) {
-      setQuestion(preset)
-      localStorage.removeItem("preset_question")
-    }
-    if (localStorage.getItem("user_profile")) {
-      setHasProfile(true)
-    }
+    if (preset) { setQuestion(preset); localStorage.removeItem("preset_question") }
+    if (localStorage.getItem("user_profile")) setHasProfile(true)
   }, [])
 
   const startCasting = () => {
@@ -36,10 +54,22 @@ export default function AskPage() {
     setPhase("casting")
     setCastLines([])
     setCurrentCast(1)
+    setRitualStep(0)
 
     let cast = 1
     const interval = setInterval(() => {
-      if (cast > 6) { clearInterval(interval); fetchReading(); return }
+      if (cast > 6) {
+        clearInterval(interval)
+        // Start ritual steps
+        let step = 0
+        setRitualStep(0)
+        const ritual = setInterval(() => {
+          step++
+          if (step >= RITUAL_STEPS.length) { clearInterval(ritual); fetchReading(); return }
+          setRitualStep(step)
+        }, 1200)
+        return
+      }
 
       const coins = [Math.random() < 0.5 ? 2 : 3, Math.random() < 0.5 ? 2 : 3, Math.random() < 0.5 ? 2 : 3]
       const sum = coins[0] + coins[1] + coins[2]
@@ -71,7 +101,15 @@ export default function AskPage() {
       setReading(data.reading)
       setHexData(data.coinCast)
       setPhase("result")
+      setSaved(false)
     } catch (err) { console.error("Coin reading error:", err) }
+  }
+
+  const saveReading = () => {
+    const existing = JSON.parse(localStorage.getItem("saved_readings") || "[]")
+    existing.unshift({ question, hexData, reading, date: new Date().toISOString() })
+    localStorage.setItem("saved_readings", JSON.stringify(existing.slice(0, 20)))
+    setSaved(true)
   }
 
   const getLineDisplay = (line: CoinLine) => {
@@ -84,25 +122,36 @@ export default function AskPage() {
     <main className="flex-1 min-h-screen pb-24">
       <header className="px-6 py-8 text-center">
         <Link href="/" className="text-[#c9a96e]/40 text-xs tracking-widest uppercase mb-4 inline-block hover:text-[#c9a96e]/70 transition-colors">
-          {String.fromCharCode(8592)} The Ancient Sage
+          ← The Ancient Sage
         </Link>
         <h1 className="text-2xl text-gold-grad" style={{ fontFamily: "'Playfair Display', serif" }}>
           Ask the Oracle
         </h1>
         <p className="text-[#e8e0d5]/40 text-sm mt-2 max-w-sm mx-auto leading-relaxed">
-          Three bronze coins. Six throws. One answer from three thousand years of wisdom.
+          Three bronze coins. Six throws. One answer.
         </p>
       </header>
 
       <div className="max-w-lg mx-auto px-4 space-y-6">
         {phase === "input" && (
           <div className="card-eastern p-6">
-            <div className="flex justify-center gap-4 text-[#c9a96e]/10 text-xl mb-5">
-              <span>☰</span><span>☷</span><span>☵</span><span>☲</span><span>☳</span><span>☴</span>
+            {/* Category chips */}
+            <div className="flex justify-center gap-2 mb-5">
+              {CATEGORIES.map((c) => (
+                <button
+                  key={c.label}
+                  onClick={() => setCategory(c.emoji)}
+                  className={`px-4 py-2 rounded-full text-xs tracking-wide transition-all ${
+                    category === c.emoji
+                      ? 'bg-[#c9a96e]/15 border border-[#c9a96e]/40 text-[#c9a96e]'
+                      : 'border border-[#c9a96e]/10 text-[#e8e0d5]/40 hover:border-[#c9a96e]/30 hover:text-[#e8e0d5]/60'
+                  }`}
+                >
+                  {c.emoji} {c.label}
+                </button>
+              ))}
             </div>
-            <label className="block text-[#e8e0d5]/60 text-xs tracking-wider uppercase mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>
-              What do you want to ask?
-            </label>
+
             <textarea
               value={question}
               onChange={e => setQuestion(e.target.value)}
@@ -111,24 +160,20 @@ export default function AskPage() {
               className="w-full bg-[#0a0a0f] border border-[#c9a96e33] rounded-lg px-4 py-3 text-[#e8e0d5] focus:outline-none focus:border-[#c9a96e] transition-colors resize-none placeholder:text-[#e8e0d5]/15"
             />
 
-            {/* Question templates */}
-            <div className="mt-5 space-y-2">
-              <p className="text-[#e8e0d5]/25 text-[10px] tracking-wider text-center mb-3">Or tap a question</p>
-              {[
-                "Should I let go, or should I hold on?",
-                "Is this the right time to change direction?",
-                "What is blocking me right now?",
-                "What should I focus on today?",
-              ].map((q) => (
-                <button
-                  key={q}
-                  onClick={() => setQuestion(q)}
-                  className="w-full text-left px-4 py-2.5 rounded-lg border border-[#c9a96e]/10 text-[#e8e0d5]/40 text-sm hover:border-[#c9a96e]/30 hover:text-[#e8e0d5]/70 transition-all"
-                >
-                  &ldquo;{q}&rdquo;
-                </button>
-              ))}
-            </div>
+            {/* Category-specific question templates */}
+            {category && QUESTIONS[category as keyof typeof QUESTIONS] && (
+              <div className="mt-4 space-y-2">
+                {QUESTIONS[category as keyof typeof QUESTIONS].map((q) => (
+                  <button
+                    key={q}
+                    onClick={() => setQuestion(q)}
+                    className="w-full text-left px-4 py-2 rounded-lg border border-[#c9a96e]/8 text-[#e8e0d5]/35 text-xs hover:border-[#c9a96e]/25 hover:text-[#e8e0d5]/60 transition-all"
+                  >
+                    &ldquo;{q}&rdquo;
+                  </button>
+                ))}
+              </div>
+            )}
 
             <button onClick={startCasting} disabled={!question.trim()}
               className="w-full mt-5 bg-[#c9a96e] text-[#0a0a0f] py-3.5 rounded-full font-semibold tracking-wide hover:bg-[#e0c98a] transition-all duration-300 disabled:opacity-20 disabled:cursor-not-allowed">
@@ -139,39 +184,59 @@ export default function AskPage() {
 
         {phase === "casting" && (
           <div className="card-eastern p-8 text-center">
-            <p className="text-[#c9a96e]/50 text-xs tracking-widest uppercase mb-5" style={{ fontFamily: "'Playfair Display', serif" }}>
-              The coins fall... Line {Math.min(currentCast, 6)} of 6
-            </p>
-            <div className="flex justify-center gap-4 mb-8">
-              {[0, 1, 2].map(i => (
-                <div key={i} className={`w-12 h-12 rounded-full border border-[#c9a96e]/30 flex items-center justify-center text-gold text-lg ${currentCast <= 6 ? 'coin-flip' : ''}`}
-                  style={{ animationDelay: `${i * 0.15}s`, background: 'radial-gradient(circle at 30% 30%, rgba(201,169,110,0.15), transparent)', fontFamily: "'Noto Serif SC', serif" }}>
-                  币
+            {/* Coin casting or ritual waiting */}
+            {currentCast <= 6 ? (
+              <>
+                <p className="text-[#c9a96e]/50 text-xs tracking-widest uppercase mb-5" style={{ fontFamily: "'Playfair Display', serif" }}>
+                  Line {Math.min(currentCast, 6)} of 6
+                </p>
+                <div className="flex justify-center gap-4 mb-8">
+                  {[0, 1, 2].map(i => (
+                    <div key={i} className="w-12 h-12 rounded-full border border-[#c9a96e]/30 flex items-center justify-center text-gold text-lg coin-flip"
+                      style={{ animationDelay: `${i * 0.15}s`, background: 'radial-gradient(circle at 30% 30%, rgba(201,169,110,0.15), transparent)', fontFamily: "'Noto Serif SC', serif" }}>
+                      币
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-            <div className="flex flex-col-reverse items-center gap-2 mb-6">
-              {[1, 2, 3, 4, 5, 6].map(lineNum => {
-                const existingLine = castLines.find(l => l.lineNumber === lineNum)
-                return (
-                  <div key={lineNum} className="w-full max-w-[200px] h-7 flex items-center justify-center">
-                    {existingLine ? (
-                      <div className="flex flex-col items-center gap-1 w-full animate-fade-in-up">
-                        {getLineDisplay(existingLine)}
-                        {existingLine.changing && <span className="text-[#c9a96e]/50 text-[9px] tracking-wider">transforming</span>}
+                <div className="flex flex-col-reverse items-center gap-2 mb-6">
+                  {[1, 2, 3, 4, 5, 6].map(lineNum => {
+                    const existingLine = castLines.find(l => l.lineNumber === lineNum)
+                    return (
+                      <div key={lineNum} className="w-full max-w-[200px] h-7 flex items-center justify-center">
+                        {existingLine ? (
+                          <div className="flex flex-col items-center gap-1 w-full animate-fade-in-up">
+                            {getLineDisplay(existingLine)}
+                            {existingLine.changing && <span className="text-[#c9a96e]/50 text-[9px] tracking-wider">transforming</span>}
+                          </div>
+                        ) : (
+                          <div className="text-[#e8e0d5]/5 text-xs tracking-widest">{lineNum <= currentCast ? "···" : "—"}</div>
+                        )}
                       </div>
-                    ) : (
-                      <div className="text-[#e8e0d5]/5 text-xs tracking-widest">{lineNum <= currentCast ? String.fromCharCode(183,183,183) : String.fromCharCode(8212)}</div>
-                    )}
-                  </div>
-                )
-              })}
-            </div>
-            <div className="flex justify-center gap-2">
-              {[1, 2, 3, 4, 5, 6].map(n => (
-                <div key={n} className={`w-1.5 h-1.5 rounded-full transition-all duration-500 ${n <= currentCast ? 'bg-[#c9a96e]' : 'bg-[#c9a96e]/10'}`} />
-              ))}
-            </div>
+                    )
+                  })}
+                </div>
+                <div className="flex justify-center gap-2">
+                  {[1, 2, 3, 4, 5, 6].map(n => (
+                    <div key={n} className={`w-1.5 h-1.5 rounded-full transition-all duration-500 ${n <= currentCast ? 'bg-[#c9a96e]' : 'bg-[#c9a96e]/10'}`} />
+                  ))}
+                </div>
+              </>
+            ) : (
+              /* Ritual waiting step */
+              <div className="py-12">
+                <div className="w-16 h-16 mx-auto rounded-full bg-[#c9a96e]/10 border border-[#c9a96e]/20 flex items-center justify-center mb-6">
+                  <span className="text-2xl text-gold animate-pulse">易</span>
+                </div>
+                <p className="text-[#c9a96e]/60 text-sm animate-fade-in-up" style={{ fontFamily: "'Playfair Display', serif" }}>
+                  {RITUAL_STEPS[ritualStep]}
+                </p>
+                <div className="flex justify-center gap-2 mt-6">
+                  {RITUAL_STEPS.map((_, i) => (
+                    <div key={i} className={`w-1.5 h-1.5 rounded-full transition-all duration-500 ${i <= ritualStep ? 'bg-[#c9a96e]' : 'bg-[#c9a96e]/15'}`} />
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
 
@@ -179,7 +244,6 @@ export default function AskPage() {
           <div className="space-y-6">
             {/* Hexagram card */}
             <div className="card-eastern p-6 text-center">
-              <div className="flex justify-center gap-6 text-[#c9a96e]/15 text-xl mb-4"><span>☯</span></div>
               <p className="text-[#c9a96e]/40 text-[10px] tracking-widest uppercase mb-4">Your Hexagram</p>
               <div className="flex flex-col-reverse items-center gap-1.5 mb-5">
                 {castLines.map(line => (
@@ -202,19 +266,21 @@ export default function AskPage() {
                 <div className="w-6 h-6 rounded-full bg-[#c9a96e]/10 flex items-center justify-center text-[10px] text-[#c9a96e]">易</div>
                 <p className="text-[#c9a96e]/50 text-xs tracking-widest uppercase" style={{ fontFamily: "'Playfair Display', serif" }}>The Oracle Speaks</p>
               </div>
-              <div className="text-sm leading-relaxed text-[#e8e0d5]/80 oracle-reading" style={{ fontFamily: "'Playfair Display', serif" }}
+              <div className="text-sm leading-relaxed text-[#e8e0d5]/80" style={{ fontFamily: "'Playfair Display', serif" }}
                 dangerouslySetInnerHTML={{ __html: renderMarkdown(reading) }} />
             </div>
 
-            {/* Ask a follow-up */}
-            <div className="card-eastern p-5 text-center animate-fade-in-up border-[#c9a96e]/20">
-              <p className="text-[#e8e0d5]/60 text-sm mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>
-                Want to ask what this means for your next step?
-              </p>
-              <button
-                onClick={() => { setPhase("input"); setReading(null); setHexData(null); setCastLines([]) }}
-                className="inline-block bg-[#c9a96e]/10 border border-[#c9a96e]/30 text-[#c9a96e] px-6 py-2 rounded-full text-sm font-semibold tracking-wide hover:bg-[#c9a96e]/20 transition-all duration-300">
-                Ask a Follow-up Question
+            {/* Action row: Save + Follow-up */}
+            <div className="flex gap-3">
+              <button onClick={saveReading}
+                className={`flex-1 card-eastern p-3 text-center text-sm transition-all tracking-wider ${
+                  saved ? 'text-[#c9a96e] border-[#c9a96e]/30' : 'text-[#e8e0d5]/50 hover:text-[#c9a96e] hover:border-[#c9a96e]/40'
+                }`}>
+                {saved ? "Saved" : "Save This Reading"}
+              </button>
+              <button onClick={() => { setPhase("input"); setReading(null); setHexData(null); setCastLines([]) }}
+                className="flex-1 card-eastern p-3 text-center text-[#e8e0d5]/50 text-sm hover:text-[#c9a96e] hover:border-[#c9a96e]/40 transition-all tracking-wider">
+                Ask a Follow-up
               </button>
             </div>
 
@@ -222,28 +288,17 @@ export default function AskPage() {
             {!hasProfile && (
               <div className="card-eastern p-5 text-center animate-fade-in-up border-[#c9a96e]/25">
                 <p className="text-[#c9a96e]/70 text-sm mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>
-                  Make every reading deeply personal
+                  Readings become deeply personal with your birth chart
                 </p>
                 <p className="text-[#e8e0d5]/40 text-xs mb-4">
-                  Add your birth information and the oracle will weave your readings through who you uniquely are.
+                  Add your birth moment — then every oracle speaks directly to who you uniquely are.
                 </p>
                 <Link href="/onboarding"
                   className="inline-block bg-[#c9a96e]/10 border border-[#c9a96e]/30 text-[#c9a96e] px-6 py-2 rounded-full text-sm font-semibold tracking-wide hover:bg-[#c9a96e]/20 transition-all duration-300">
-                  Add My Birth Chart
+                  Personalize My Readings
                 </Link>
               </div>
             )}
-
-            <div className="flex gap-3">
-              <button onClick={() => { setPhase("input"); setReading(null); setHexData(null); setCastLines([]) }}
-                className="flex-1 card-eastern p-3 text-center text-[#e8e0d5]/50 text-sm hover:text-[#c9a96e] hover:border-[#c9a96e]/40 transition-all tracking-wider">
-                New Question
-              </button>
-              <Link href="/"
-                className="flex-1 card-eastern p-3 text-center text-[#e8e0d5]/50 text-sm hover:text-[#c9a96e] hover:border-[#c9a96e]/40 transition-all tracking-wider">
-                Home
-              </Link>
-            </div>
           </div>
         )}
       </div>

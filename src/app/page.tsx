@@ -8,9 +8,8 @@ import { EmblemIcon } from "@/components/SageIcon"
 
 const SCENARIOS = [
   { emoji: "♥", label: "Love", question: "Should I let go, or should I hold on?", primary: true },
-  { emoji: "♥", label: "Relationships", question: "Is this connection real? What do they feel about me?", primary: true },
-  { emoji: "⚡", label: "Career", question: "Is this the right time to change direction in my work?" },
-  { emoji: "☯", label: "Self", question: "What is the deeper pattern behind what I'm feeling lately?" },
+  { emoji: "⚡", label: "Career", question: "Is this the right time to change direction in my work?", primary: true },
+  { emoji: "🍂", label: "Letting Go", question: "How do I release what no longer serves me and move forward?" },
   { emoji: "☀", label: "Today", question: "What energy surrounds me today? What should I pay attention to?" },
 ]
 
@@ -46,9 +45,9 @@ export default function LandingPage() {
         </p>
 
         <h1 className="text-4xl md:text-6xl text-gold-grad mb-4 leading-tight max-w-2xl" style={{ fontFamily: "'Playfair Display', serif" }}>
-          Ask the Ancient Oracle
+          When You Need a Sign,
           <br />
-          <span className="text-2xl md:text-4xl">About Love, Career, and Life Decisions</span>
+          <span className="text-2xl md:text-4xl">Ask the Oracle</span>
         </h1>
 
         <p className="text-[#e8e0d5]/55 text-sm md:text-base max-w-md leading-relaxed mb-2">
