@@ -40,7 +40,19 @@ ${changingHex ? `The changing lines reveal Hexagram #${coinResult.changingHexagr
 ${changingHex.description}` : 'No changing lines — the hexagram is stable, meaning the situation is settled.'}
 ${personalityContext}
 
-Please provide guidance for this seeker. Address their question with the wisdom of the I Ching. What does the oracle reveal about their situation? What should they consider? Give them warmth, insight, and a gentle push toward clarity.`
+Write a concise, emotionally intelligent reading in 180-240 words.
+
+Use this structure:
+### The Core Message
+Give a direct but non-predictive reflection on the seeker's question.
+
+### What This Pattern Reveals
+Explain the hexagram as a symbol for their present situation. Do not claim to know the future.
+
+### One Clear Next Step
+Offer one practical action or reflection prompt. Do not tell them what they must do.
+
+Tone: warm, grounded, wise, and modern. Avoid sounding like a generic horoscope. Avoid medical, legal, or financial advice.`
 
     const aiResponse = await getAIReading(prompt)
 

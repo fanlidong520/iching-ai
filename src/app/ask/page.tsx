@@ -42,6 +42,7 @@ export default function AskPage() {
   const [hexData, setHexData] = useState<any>(null)
   const [hasProfile, setHasProfile] = useState(false)
   const [saved, setSaved] = useState(false)
+  const [deepInterest, setDeepInterest] = useState(false)
 
   useEffect(() => {
     const preset = localStorage.getItem("preset_question")
@@ -102,6 +103,7 @@ export default function AskPage() {
       setHexData(data.coinCast)
       setPhase("result")
       setSaved(false)
+      setDeepInterest(false)
     } catch (err) { console.error("Coin reading error:", err) }
   }
 
@@ -110,6 +112,19 @@ export default function AskPage() {
     existing.unshift({ question, hexData, reading, date: new Date().toISOString() })
     localStorage.setItem("saved_readings", JSON.stringify(existing.slice(0, 20)))
     setSaved(true)
+  }
+
+  const registerDeepInterest = () => {
+    const existing = JSON.parse(localStorage.getItem("deep_reading_interest") || "[]")
+    existing.unshift({
+      question,
+      category,
+      hexagramId: hexData?.hexagramId,
+      date: new Date().toISOString(),
+      price: "$2.99",
+    })
+    localStorage.setItem("deep_reading_interest", JSON.stringify(existing.slice(0, 50)))
+    setDeepInterest(true)
   }
 
   const getLineDisplay = (line: CoinLine) => {
@@ -282,6 +297,35 @@ export default function AskPage() {
                 className="flex-1 card-eastern p-3 text-center text-[#e8e0d5]/50 text-sm hover:text-[#c9a96e] hover:border-[#c9a96e]/40 transition-all tracking-wider">
                 Ask a Follow-up
               </button>
+            </div>
+
+            {/* Deep reading interest test */}
+            <div className="card-eastern p-5 text-center animate-fade-in-up border-[#c9a96e]/25">
+              {deepInterest ? (
+                <>
+                  <p className="text-[#c9a96e] text-sm mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
+                    Your deeper reading request has been noted.
+                  </p>
+                  <p className="text-[#e8e0d5]/40 text-xs">
+                    Deeper readings are opening soon. For now, save this reading and return when the next question becomes clear.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="text-[#c9a96e]/80 text-sm mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
+                    Want to go deeper into this question?
+                  </p>
+                  <p className="text-[#e8e0d5]/40 text-xs mb-4">
+                    Unlock changing lines, hidden pattern, and one practical next step.
+                  </p>
+                  <button
+                    onClick={registerDeepInterest}
+                    className="inline-block bg-[#c9a96e] text-[#0a0a0f] px-6 py-2.5 rounded-full text-sm font-semibold tracking-wide hover:bg-[#e0c98a] transition-all duration-300"
+                  >
+                    Unlock Deeper Reading — $2.99
+                  </button>
+                </>
+              )}
             </div>
 
             {/* Birth info prompt */}

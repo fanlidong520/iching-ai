@@ -35,26 +35,26 @@ export default function LandingPage() {
     <main className="flex-1 relative">
 
       {/* ===== HERO ===== */}
-      <section className="relative z-10 min-h-screen flex flex-col items-center justify-center px-6 py-16 text-center">
-        <div className="mb-8">
+      <section className="relative z-10 min-h-screen flex flex-col items-center justify-center px-6 py-10 text-center">
+        <div className="mb-6">
           <SageImage size="hero" />
         </div>
 
         <p className="text-[#c9a96e]/60 text-xs tracking-[0.2em] uppercase mb-4">
-          A Private Oracle for Love, Career &amp; Life Decisions
+          A Private Clarity Oracle for Love, Career &amp; Life Decisions
         </p>
 
-        <h1 className="text-4xl md:text-6xl text-gold-grad mb-4 leading-tight max-w-2xl" style={{ fontFamily: "'Playfair Display', serif" }}>
-          When You Need a Sign,
+        <h1 className="text-4xl md:text-6xl text-gold-grad mb-4 leading-tight max-w-3xl" style={{ fontFamily: "'Playfair Display', serif" }}>
+          Clarity for the Question
           <br />
-          <span className="text-2xl md:text-4xl">Ask the Oracle</span>
+          <span className="text-2xl md:text-4xl">You Can&apos;t Stop Thinking About</span>
         </h1>
 
-        <p className="text-[#e8e0d5]/55 text-sm md:text-base max-w-md leading-relaxed mb-2">
+        <p className="text-[#e8e0d5]/65 text-sm md:text-base max-w-md leading-relaxed mb-2">
           When your heart already knows, but your mind still needs to hear it —
         </p>
-        <p className="text-[#e8e0d5]/35 text-xs md:text-sm max-w-md leading-relaxed mb-10">
-          Three coins. Six throws. One answer from three millennia of Eastern wisdom.
+        <p className="text-[#e8e0d5]/45 text-xs md:text-sm max-w-md leading-relaxed mb-8">
+          A reflective ritual guided by three millennia of Eastern wisdom.
         </p>
 
         {/* Primary CTA — "Ask a question" first */}
@@ -113,7 +113,7 @@ export default function LandingPage() {
               {
                 step: "1",
                 title: "Ask Your Question",
-                desc: "What weighs on your heart? Type it in — love, career, a choice you can't stop thinking about.",
+                desc: "Name the decision or feeling that keeps returning — love, career, letting go, or today.",
                 icon: "✧",
               },
               {
@@ -125,7 +125,7 @@ export default function LandingPage() {
               {
                 step: "3",
                 title: "Receive Your Reading",
-                desc: "The oracle speaks. A warm, personal, specific response — not a generic horoscope.",
+                desc: "Receive a warm, specific reflection with one clear next step — not a generic horoscope.",
                 icon: "易",
               },
             ].map((item, i) => (
@@ -228,10 +228,10 @@ export default function LandingPage() {
       <section className="relative z-10 py-24 px-6">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl md:text-3xl text-gold-grad text-center mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>
-            Three Ways the Oracle Helps
+            Three Ways to Find Clarity
           </h2>
           <p className="text-[#e8e0d5]/40 text-sm text-center mb-16 max-w-lg mx-auto">
-            No astrology knowledge needed. Just someone who listens.
+            No astrology knowledge needed. Just a quiet ritual for reflection, patterns, and the next step.
           </p>
 
           <div className="grid md:grid-cols-3 gap-6">
@@ -239,17 +239,17 @@ export default function LandingPage() {
               {
                 icon: "🪙",
                 title: "Ask a Question",
-                desc: "Should I reconnect with someone? Is this the right time to change direction? Cast three coins and the oracle answers — specific, personal, direct.",
+                desc: "Should I reconnect with someone? Is this the right time to change direction? Cast three coins and receive a specific reflection.",
               },
               {
                 icon: "☯",
                 title: "Daily Reflection",
-                desc: "No question needed. Each day brings a new hexagram and a gentle reflection. Like a morning companion who always has something wise to say.",
+                desc: "A 3-minute daily practice: notice what weighs on you, see the pattern, and choose one clear action.",
               },
               {
                 icon: "☀",
                 title: "Know Your Pattern",
-                desc: "Add your birth moment to unlock your personal birth chart. Then every reading is woven through the lens of who you uniquely are.",
+                desc: "Add your birth moment to unlock your Eastern birth pattern, so future readings can reflect your recurring themes.",
               },
             ].map((item, i) => (
               <div key={i} className="card-eastern p-6 text-center group hover:border-[#c9a96e]/30 transition-all">
@@ -343,7 +343,7 @@ function ConsultationForm() {
   if (sent) return (
     <div className="text-center py-6 animate-fade-in-up">
       <p className="text-[#c9a96e] text-lg mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>Your message has reached the mountain.</p>
-      <p className="text-[#e8e0d5]/40 text-sm">The master will respond within three days.</p>
+        <p className="text-[#e8e0d5]/40 text-sm">A longer reading request has been saved for review.</p>
     </div>
   )
 

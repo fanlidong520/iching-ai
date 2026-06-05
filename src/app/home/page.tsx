@@ -72,7 +72,7 @@ export default function HomePage() {
       {/* Header */}
       <header className="px-6 py-8 text-center">
         <SageImage size="sm" />
-        <p className="text-[#c9a96e]/40 text-[10px] tracking-widest uppercase mb-2">The master is present</p>
+        <p className="text-[#c9a96e]/40 text-[10px] tracking-widest uppercase mb-2">The oracle is open</p>
         <h1 className="text-2xl text-gold-grad" style={{ fontFamily: "'Playfair Display', serif" }}>
           Your Sacred Space
         </h1>
@@ -134,7 +134,7 @@ export default function HomePage() {
               <div className="flex items-center gap-2 mb-4 pb-3 border-b border-[#c9a96e]/10">
                 <div className="w-6 h-6 rounded-full bg-[#c9a96e]/10 flex items-center justify-center text-[10px] text-[#c9a96e]">易</div>
                 <p className="text-[#c9a96e]/50 text-xs tracking-widest uppercase" style={{ fontFamily: "'Playfair Display', serif" }}>
-                  The Master Speaks
+                  The Oracle Speaks
                 </p>
               </div>
               <div className="text-sm leading-relaxed text-[#e8e0d5]/80 whitespace-pre-line"
@@ -159,10 +159,10 @@ export default function HomePage() {
                   <span className="text-3xl opacity-50 text-[#c9a96e]" style={{ fontFamily: "'Noto Serif SC', serif" }}>易</span>
                 </div>
                 <h3 className="text-xl text-gold-grad mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
-                  The Master Has Prepared Your Oracle
+                  Your Daily Reflection Is Ready
                 </h3>
                 <p className="text-[#e8e0d5]/40 text-sm leading-relaxed max-w-xs mx-auto">
-                  The scroll is sealed with your celestial mark.
+                  The scroll is shaped by your celestial mark.
                   <br />
                   Open it, and the ancient wisdom woven from
                   <br />
@@ -176,7 +176,7 @@ export default function HomePage() {
                            hover:bg-[#e0c98a] transition-all duration-300 disabled:opacity-50 overflow-hidden"
               >
                 <span className="relative z-10">
-                  {loading ? "The master unseals the scroll..." : "Open Today's Scroll"}
+                  {loading ? "The oracle opens the scroll..." : "Open Today's Scroll"}
                 </span>
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
               </button>

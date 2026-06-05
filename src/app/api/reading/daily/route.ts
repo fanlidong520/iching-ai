@@ -26,7 +26,19 @@ ${changingHex?.description || ''}
 ${lifeHexId ? `My Life Hexagram: #${lifeHexId}` : ''}
 ${baziSummary ? `My BaZi essence: ${baziSummary}` : ''}
 
-Please give me my daily guidance. What energy surrounds me today? What should I be mindful of? How does today's hexagram interact with my personal energy? Speak to me warmly, like the wise elder you are.`
+Write a short daily reflection in 250-350 words.
+
+Use this structure:
+### Today's Pattern
+Describe the tone of the day through the hexagram.
+
+### What to Notice
+Name one inner pattern, tension, or opportunity for reflection.
+
+### One Clear Step
+Give one small action the seeker can take today.
+
+Tone: warm, grounded, and practical. Do not predict exact events. Do not sound like a generic horoscope.`
 
     const aiResponse = await getAIReading(prompt)
 

@@ -67,7 +67,7 @@ export default function MonthlyPage() {
             <>
               <div className="mb-5">
                 <p className="text-[#e8e0d5]/40 text-sm leading-relaxed mb-6 max-w-sm mx-auto">
-                  The master gazes at the lunar cycle of {monthName},
+                  The oracle reflects on the lunar cycle of {monthName},
                   <br />
                   reading the cosmic currents that will shape
                   <br />
@@ -80,7 +80,7 @@ export default function MonthlyPage() {
                 className="bg-[#c9a96e] text-[#0a0a0f] px-8 py-3 rounded-full font-semibold tracking-wide
                            hover:bg-[#e0c98a] transition-all duration-300 disabled:opacity-50"
               >
-                {loading ? "The master contemplates the moon..." : `Unseal the ${monthName} Scroll`}
+                {loading ? "The oracle reads the moon..." : `Unseal the ${monthName} Scroll`}
               </button>
             </>
           )}

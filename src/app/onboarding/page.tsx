@@ -56,7 +56,7 @@ export default function OnboardingPage() {
         <div className="text-center mb-10">
           <SageImage size="md" />
           <h1 className="text-3xl md:text-4xl text-gold-grad mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>
-            The Master Awaits
+            Your Pattern Awaits
           </h1>
           <p className="text-[#e8e0d5]/50 text-sm leading-relaxed" style={{ fontFamily: "'Playfair Display', serif", fontStyle: 'italic' }}>
             The ancient sages knew: to understand the river&apos;s course,
@@ -64,7 +64,7 @@ export default function OnboardingPage() {
             one must know where it began.
             <br />
             <span className="text-[#e8e0d5]/30">
-              Share the moment of your arrival, and the master
+              Share the moment of your arrival, and the oracle
               <br />
               will reveal your celestial design.
             </span>
@@ -154,10 +154,10 @@ export default function OnboardingPage() {
             {loading ? (
               <span className="flex items-center justify-center gap-2">
                 <span className="w-5 h-5 border-2 border-[#0a0a0f]/30 border-t-[#0a0a0f] rounded-full animate-spin" />
-                The master studies the patterns...
+                The oracle studies the patterns...
               </span>
             ) : (
-              "Present Yourself to the Master"
+              "Reveal My Pattern"
             )}
           </button>
         </form>

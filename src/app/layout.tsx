@@ -10,9 +10,9 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  title: "The Ancient Sage · I Ching Oracle",
-  description: "The 3000-year-old I Ching speaks again. Your personal oracle and spiritual companion — daily guidance from the ancient Eastern masters.",
-  keywords: ["I Ching", "Yi Jing", "divination", "spirituality", "Eastern wisdom", "meditation", "daily guidance", "oracle", "BaZi"],
+  title: "The Ancient Sage · Clarity Oracle",
+  description: "A private clarity oracle for love, career, and life decisions, guided by Eastern wisdom.",
+  keywords: ["clarity", "decision companion", "Eastern wisdom", "reflection", "daily guidance", "oracle", "I Ching", "BaZi"],
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
@@ -20,15 +20,15 @@ export const metadata: Metadata = {
     title: "Ancient Sage",
   },
   openGraph: {
-    title: "The Ancient Sage · I Ching Oracle",
-    description: "Ancient Eastern wisdom for modern souls. Daily I Ching readings personalized to your celestial blueprint.",
+    title: "The Ancient Sage · Clarity Oracle",
+    description: "Find clarity for love, career, and life decisions through a private Eastern wisdom ritual.",
     type: "website",
     siteName: "The Ancient Sage",
   },
   twitter: {
     card: "summary",
-    title: "The Ancient Sage · I Ching Oracle",
-    description: "Ancient Eastern wisdom for modern souls.",
+    title: "The Ancient Sage · Clarity Oracle",
+    description: "A private clarity oracle guided by Eastern wisdom.",
   },
 }
 

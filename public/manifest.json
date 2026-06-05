@@ -1,7 +1,7 @@
 {
-  "name": "The Ancient Sage · I Ching Oracle",
+  "name": "The Ancient Sage · Clarity Oracle",
   "short_name": "Ancient Sage",
-  "description": "Daily I Ching readings from the ancient Eastern masters. Your personal oracle and spiritual companion.",
+  "description": "A private clarity oracle for love, career, and life decisions, guided by Eastern wisdom.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0a0a0f",
