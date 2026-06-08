@@ -33,7 +33,7 @@ const RITUAL_STEPS = [
 
 export default function AskPage() {
   const [question, setQuestion] = useState("")
-  const [category, setCategory] = useState("")
+  const [category, setCategory] = useState("♥")
   const [phase, setPhase] = useState<"input" | "casting" | "result">("input")
   const [castLines, setCastLines] = useState<CoinLine[]>([])
   const [currentCast, setCurrentCast] = useState(0)
@@ -96,7 +96,7 @@ export default function AskPage() {
       const res = await fetch("/api/reading/coin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question, baziSummary: elements, lifeHexId: profile.lifeHexagram?.id }),
+        body: JSON.stringify({ question, category, baziSummary: elements, lifeHexId: profile.lifeHexagram?.id }),
       })
       const data = await res.json()
       setReading(data.reading)
@@ -270,6 +270,14 @@ export default function AskPage() {
               </div>
               <p className="text-gold text-xl" style={{ fontFamily: "'Playfair Display', serif" }}>{hexData.mainHexagram?.nameEn}</p>
               <p className="text-[#e8e0d5]/30 text-sm mt-1" style={{ fontFamily: "'Noto Serif SC', serif" }}>{hexData.mainHexagram?.nameZh}</p>
+              {hexData.mainHexagram?.judgment && (
+                <div className="mt-4 pt-4 border-t border-[#c9a96e]/10">
+                  <p className="text-[#c9a96e]/40 text-[10px] tracking-widest uppercase mb-2">Source Text</p>
+                  <p className="text-[#e8e0d5]/45 text-xs leading-relaxed italic">
+                    &ldquo;{hexData.mainHexagram.judgment}&rdquo;
+                  </p>
+                </div>
+              )}
               {hexData.changingHexagram && (
                 <p className="text-[#e8e0d5]/35 text-xs mt-3">Evolving toward: {hexData.changingHexagram.nameEn} ({hexData.changingHexagram.nameZh})</p>
               )}
@@ -283,6 +291,9 @@ export default function AskPage() {
               </div>
               <div className="text-sm leading-relaxed text-[#e8e0d5]/80" style={{ fontFamily: "'Playfair Display', serif" }}
                 dangerouslySetInnerHTML={{ __html: renderMarkdown(reading) }} />
+              <p className="mt-5 pt-4 border-t border-[#c9a96e]/10 text-[#e8e0d5]/30 text-[11px] leading-relaxed">
+                Inspired by the I Ching for reflection only. This reading does not predict your future or make decisions for you.
+              </p>
             </div>
 
             {/* Action row: Save + Follow-up */}

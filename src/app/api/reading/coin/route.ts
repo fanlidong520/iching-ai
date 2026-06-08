@@ -5,7 +5,7 @@ import { getHexagramById } from '@/data/hexagrams'
 
 export async function POST(request: NextRequest) {
   try {
-    const { question, baziSummary, lifeHexId } = await request.json()
+    const { question, category, baziSummary, lifeHexId } = await request.json()
 
     if (!question || question.trim().length === 0) {
       return NextResponse.json(
@@ -27,7 +27,11 @@ export async function POST(request: NextRequest) {
       ? `\n\nThe seeker's Life Hexagram is #${lifeHexId}.\nThe seeker's elemental nature: ${baziSummary}\nYou may subtly reference how their personal energy interacts with this hexagram.`
       : `\n\nIMPORTANT: The seeker has NOT shared their birth information. Do NOT mention birth charts, elemental charts, BaZi, five elements, personal celestial blueprints, or any reference to "your chart" or "your elements." Base your reading ONLY on the hexagram and their question.`
 
-    const prompt = `A seeker asks: "${question}"
+    const categoryContext = category
+      ? `\nReading category: ${category}. Use it only as light context for tone and examples.`
+      : ''
+
+    const prompt = `A seeker asks: "${question}"${categoryContext}
 
 I cast three coins six times and received this oracle:
 
@@ -69,6 +73,7 @@ Tone: warm, grounded, wise, and modern. Avoid sounding like a generic horoscope.
           description: mainHex?.description,
           element: mainHex?.element,
           keywords: mainHex?.keywords,
+          judgment: mainHex?.judgment,
         },
         changingHexagram: changingHex ? {
           id: changingHex.id,
@@ -76,6 +81,7 @@ Tone: warm, grounded, wise, and modern. Avoid sounding like a generic horoscope.
           nameEn: changingHex.nameEn,
           description: changingHex.description,
           element: changingHex.element,
+          judgment: changingHex.judgment,
         } : null,
       },
       question,
